@@ -10,13 +10,13 @@
  * Please fill in the following team struct 
  */
 team_t team = {
-    "bovik",              /* Team name */
+    "hseaman-tbarton",              /* Team name */
 
-    "Harry Q. Bovik",     /* First member full name */
-    "bovik@nowhere.edu",  /* First member email address */
+    "Heather L Seaman",     /* First member full name */
+    "hseaman@g.hmc.edu",  /* First member email address */
 
-    "",                   /* Second member full name (leave blank if none) */
-    ""                    /* Second member email addr (leave blank if none) */
+    "Theresa C Barton",                   /* Second member full name (leave blank if none) */
+    "tcb22012@pomona.edu"                    /* Second member email addr (leave blank if none) */
 };
 
 /***************
@@ -51,10 +51,13 @@ char naive_rotate_descr[] = "naive_rotate: Naive baseline implementation";
 void naive_rotate(int dim, pixel *src, pixel *dst) 
 {
     int i, j;
+    for (j = 0; j < dim; j++){
+        int dimj = dim*(dim-1-j);
 
-    for (i = 0; i < dim; i++)
-        for (j = 0; j < dim; j++)
-            dst[ridx(dim-1-j, i, dim)] = src[ridx(i, j, dim)];
+        for (i = 0; i < dim; i++){ 
+            dst[dimj + i] = src[i*dim + j];
+        }
+    }
 }
 
 /* 
@@ -148,8 +151,14 @@ static pixel avg(int dim, int i, int j, pixel *src)
     pixel current_pixel;
 
     initialize_pixel_sum(&sum);
-    for(ii = max(i-1, 0); ii <= min(i+1, dim-1); ii++) 
-        for(jj = max(j-1, 0); jj <= min(j+1, dim-1); jj++) 
+
+    int maxi = max(i-1, 0);
+    int mini = min(i+1, dim-1);
+    int maxj = max(j-1, 0);
+    int minj = min(j+1, dim-1);
+
+    for(ii = maxi; ii <= mini; ii++) 
+        for(jj = maxj; jj <=minj; jj++) 
             accumulate_sum(&sum, src[ridx(ii, jj, dim)]);
 
     assign_sum_to_pixel(&current_pixel, sum);
